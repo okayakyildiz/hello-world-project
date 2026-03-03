@@ -179,6 +179,21 @@
     .auth-btn:hover    { background: #142750; }
     .auth-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
+    .auth-guest-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: transparent;
+      color: var(--text-dim);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .auth-guest-btn:hover { background: var(--surface); color: var(--text); border-color: var(--text-dim); }
+
     .auth-divider {
       text-align: center;
       font-size: 0.72rem;
@@ -379,6 +394,23 @@
     .toast.show  { transform: translateX(-50%) translateY(0); }
     .toast.error { background: var(--danger); }
 
+    /* ── GUEST BANNER ── */
+    .guest-banner {
+      display: none;
+      background: rgba(250,185,91,0.15);
+      border-bottom: 1px solid rgba(250,185,91,0.3);
+      padding: 0.55rem 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8a6010;
+      text-align: center;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .guest-banner.show { display: flex; }
+    .guest-banner a { color: var(--accent); text-decoration: underline; cursor: pointer; font-weight: 700; }
+
     /* ── MODAL ── */
     .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(10,18,35,0.55); z-index: 50; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
     .modal-backdrop.open { display: flex; }
@@ -487,11 +519,17 @@
       .heatmap-grid { grid-template-columns: repeat(10, 1fr); }
 
       /* Modal — slide up from bottom on mobile */
-      .modal-backdrop.open { align-items: flex-end; }
+      .modal-backdrop.open {
+        align-items: flex-end;
+        padding: 0;
+      }
       .modal {
         width: 100%; max-width: 100%;
         border-radius: 20px 20px 0 0;
         padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+        max-height: 92vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       /* Bottom nav & FAB */
@@ -553,6 +591,12 @@
       <button class="auth-btn" id="authSubmitBtn" onclick="handleAuth()">
         <span id="authBtnText">Giriş Yap</span>
       </button>
+
+      <div class="auth-divider">veya</div>
+
+      <button class="auth-guest-btn" onclick="handleGuest()">
+        Misafir olarak devam et
+      </button>
     </div>
   </div>
 
@@ -591,6 +635,10 @@
 
     <!-- CONTENT -->
     <div class="content">
+      <div class="guest-banner" id="guestBanner">
+        👤 Misafir modundasın — veriler kaydedilmez.
+        <a onclick="handleLogout()">Giriş yap</a>
+      </div>
       <div class="page-header">
         <div>
           <h1 id="pageTitle">Bugün</h1>
@@ -739,6 +787,7 @@
   const TODAY = now.toISOString().split('T')[0];
 
   let currentUser  = null;
+  let isGuest      = false;
   let selectedDate = TODAY;
   let weekOffset   = 0;
   let HABITS       = [];
@@ -841,14 +890,37 @@
   }
 
   async function handleLogout() {
-    await sb.auth.signOut();
+    if (!isGuest) await sb.auth.signOut();
     currentUser = null;
+    isGuest = false;
     HABITS = []; DATE_DONE = {};
     document.getElementById('appScreen').classList.remove('visible');
+    document.getElementById('guestBanner').classList.remove('show');
     document.getElementById('authScreen').style.display = 'flex';
     document.getElementById('authEmail').value    = '';
     document.getElementById('authPassword').value = '';
     switchTab('login');
+  }
+
+  function handleGuest() {
+    isGuest = true;
+    currentUser = null;
+    // Seed with sample habits stored only in memory
+    HABITS = [
+      { id:1, name:'10 dk Meditasyon', cat:'zihin',  freq:'Her gün',   streak:5,  active:true,  bars:[1,1,0,1,1,0,1] },
+      { id:2, name:'30 dk Yürüyüş',    cat:'saglik', freq:'Her gün',   streak:3,  active:true,  bars:[0,1,1,1,0,1,0] },
+      { id:3, name:'Kitap Okuma',       cat:'zihin',  freq:'Her gün',   streak:2,  active:true,  bars:[1,0,1,0,1,1,0] },
+      { id:4, name:'Su Takibi (2L)',    cat:'saglik', freq:'Her gün',   streak:7,  active:true,  bars:[1,1,1,1,1,1,0] },
+      { id:5, name:'Kod Yaz',           cat:'uretim', freq:'Hafta içi', streak:1,  active:false, bars:[0,0,1,0,0,1,0] },
+    ];
+    DATE_DONE = {};
+    document.getElementById('userEmail').textContent = '👤 Misafir';
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('appScreen').classList.add('visible');
+    document.getElementById('guestBanner').classList.add('show');
+    setDbStatus('connected');
+    buildWeekStrip();
+    navigate('bugun');
   }
 
   async function onLogin(user) {
@@ -872,6 +944,7 @@
      DATA LOADING
   ══════════════════════════════════════════ */
   async function loadAll() {
+    if (isGuest) return; // guest uses in-memory HABITS
     setDbStatus('loading');
     try {
       const { data, error } = await sb
@@ -890,7 +963,7 @@
   }
 
   async function loadLogsForDate(dateStr) {
-    if (!currentUser) return;
+    if (isGuest || !currentUser) return;
     try {
       const { data, error } = await sb
         .from('daily_logs')
@@ -1074,27 +1147,33 @@
 
     try {
       if (!wasDone) {
-        const { data, error } = await sb
-          .from('daily_logs')
-          .insert({ habit_id: h.id, log_date: selectedDate, done: true, user_id: currentUser.id })
-          .select('id').single();
-        if (error) throw error;
-        DATE_DONE[h.id] = data.id;
+        if (isGuest) {
+          DATE_DONE[h.id] = 'guest-' + h.id;
+        } else {
+          const { data, error } = await sb
+            .from('daily_logs')
+            .insert({ habit_id: h.id, log_date: selectedDate, done: true, user_id: currentUser.id })
+            .select('id').single();
+          if (error) throw error;
+          DATE_DONE[h.id] = data.id;
+        }
         if (selectedDate === TODAY) {
           h.streak = (h.streak||0) + 1;
           const newBars = [...(h.bars||[0,0,0,0,0,0,0]).slice(1), 1];
-          await sb.from('habits').update({ streak: h.streak, bars: newBars }).eq('id', h.id);
+          if (!isGuest) await sb.from('habits').update({ streak: h.streak, bars: newBars }).eq('id', h.id);
           h.bars = newBars;
         }
         toast(`✓ ${h.name} tamamlandı!`);
       } else {
-        const { error } = await sb.from('daily_logs').delete().eq('id', DATE_DONE[h.id]);
-        if (error) throw error;
+        if (!isGuest) {
+          const { error } = await sb.from('daily_logs').delete().eq('id', DATE_DONE[h.id]);
+          if (error) throw error;
+        }
         delete DATE_DONE[h.id];
         if (selectedDate === TODAY) {
           h.streak = Math.max(0, (h.streak||1) - 1);
           const newBars = [...(h.bars||[0,0,0,0,0,0,0]).slice(1), 0];
-          await sb.from('habits').update({ streak: h.streak, bars: newBars }).eq('id', h.id);
+          if (!isGuest) await sb.from('habits').update({ streak: h.streak, bars: newBars }).eq('id', h.id);
           h.bars = newBars;
         }
         toast(`↩ ${h.name} geri alındı`);
@@ -1144,8 +1223,10 @@
       toggle.addEventListener('click', async () => {
         toggle.disabled = true;
         const newActive = !h.active;
-        const { error } = await sb.from('habits').update({ active: newActive }).eq('id', h.id);
-        if (error) { toast('Güncellenemedi', true); toggle.disabled = false; return; }
+        if (!isGuest) {
+          const { error } = await sb.from('habits').update({ active: newActive }).eq('id', h.id);
+          if (error) { toast('Güncellenemedi', true); toggle.disabled = false; return; }
+        }
         h.active = newActive;
         toggle.classList.toggle('on', newActive);
         toggle.title = newActive ? 'Aktif — kapat' : 'Pasif — aç';
@@ -1198,18 +1279,27 @@
 
     try {
       if (editingId !== null) {
-        const { error } = await sb.from('habits').update({ name, cat, freq }).eq('id', editingId);
-        if (error) throw error;
-        const h = HABITS.find(x => x.id === editingId);
-        if (h) { h.name = name; h.cat = cat; h.freq = freq; }
+        if (isGuest) {
+          const h = HABITS.find(x => x.id === editingId);
+          if (h) { h.name = name; h.cat = cat; h.freq = freq; }
+        } else {
+          const { error } = await sb.from('habits').update({ name, cat, freq }).eq('id', editingId);
+          if (error) throw error;
+          const h = HABITS.find(x => x.id === editingId);
+          if (h) { h.name = name; h.cat = cat; h.freq = freq; }
+        }
         toast('Alışkanlık güncellendi ✓');
       } else {
-        const { data, error } = await sb
-          .from('habits')
-          .insert({ name, cat, freq, streak:0, active:true, bars:[0,0,0,0,0,0,0], user_id: currentUser.id })
-          .select().single();
-        if (error) throw error;
-        HABITS.push(data);
+        if (isGuest) {
+          HABITS.push({ id: Date.now(), name, cat, freq, streak:0, active:true, bars:[0,0,0,0,0,0,0] });
+        } else {
+          const { data, error } = await sb
+            .from('habits')
+            .insert({ name, cat, freq, streak:0, active:true, bars:[0,0,0,0,0,0,0], user_id: currentUser.id })
+            .select().single();
+          if (error) throw error;
+          HABITS.push(data);
+        }
         toast('Yeni alışkanlık eklendi ✓');
       }
       closeHabitModal();
@@ -1254,8 +1344,10 @@
     if (deleteId === null) return;
     const btn = document.getElementById('confirmOk');
     btn.disabled = true; btn.textContent = '...';
-    const { error } = await sb.from('habits').delete().eq('id', deleteId);
-    if (error) { toast('Silinemedi 😞', true); btn.disabled = false; btn.textContent = 'Evet, Sil'; return; }
+    if (!isGuest) {
+      const { error } = await sb.from('habits').delete().eq('id', deleteId);
+      if (error) { toast('Silinemedi 😞', true); btn.disabled = false; btn.textContent = 'Evet, Sil'; return; }
+    }
     const name = HABITS.find(h => h.id === deleteId)?.name;
     HABITS = HABITS.filter(h => h.id !== deleteId);
     delete DATE_DONE[deleteId];
