@@ -30,9 +30,185 @@
       color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 240px 1fr;
     }
+
+    /* ══════════════════════════════════════
+       AUTH SCREEN
+    ══════════════════════════════════════ */
+    #authScreen {
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .auth-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem 2.25rem;
+      width: 400px;
+      max-width: 100%;
+      box-shadow: 0 8px 40px rgba(26,50,99,0.1);
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+
+    .auth-logo-dot {
+      width: 10px; height: 10px;
+      background: var(--accent2);
+      border-radius: 50%;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 0;
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 1.75rem;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 0.55rem;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-dim);
+      transition: all 0.15s;
+    }
+
+    .auth-tab.active {
+      background: var(--accent);
+      color: #E8E2DB;
+    }
+
+    .auth-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .auth-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 1.75rem;
+      line-height: 1.5;
+    }
+
+    .auth-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .auth-field label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+    }
+
+    .auth-field input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .auth-field input:focus { border-color: var(--accent); }
+    .auth-field input.error { border-color: var(--danger); }
+
+    .auth-error {
+      display: none;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #e8a0a0;
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .auth-error.show { display: block; }
+
+    .auth-btn {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--accent);
+      color: #E8E2DB;
+      border: none;
+      border-radius: 9px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .auth-btn:hover    { background: #142750; }
+    .auth-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .auth-divider {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      margin: 1.1rem 0;
+      position: relative;
+    }
+
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .auth-divider::before { left: 0; }
+    .auth-divider::after  { right: 0; }
+
+    /* ══════════════════════════════════════
+       MAIN APP LAYOUT
+    ══════════════════════════════════════ */
+    #appScreen {
+      display: none;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    #appScreen.visible { display: grid; }
 
     /* ── SIDEBAR ── */
     .sidebar {
@@ -52,21 +228,48 @@
     .nav-item:hover  { background: rgba(255,255,255,0.07); color: #E8E2DB; }
     .nav-item.active { background: rgba(250,185,91,0.15); color: var(--accent2); font-weight: 700; }
     .nav-icon { font-size: 0.95rem; width: 18px; text-align: center; flex-shrink: 0; }
-    .sidebar-footer { margin-top: auto; font-size: 0.68rem; color: #3d5570; font-weight: 600; padding: 0 0.5rem; }
+
+    /* User info + logout */
+    .user-info {
+      margin-top: auto;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 1rem;
+    }
+
+    .user-email {
+      font-size: 0.7rem;
+      color: #547792;
+      font-weight: 600;
+      padding: 0 0.5rem;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .logout-btn {
+      display: flex; align-items: center; gap: 0.6rem;
+      width: 100%;
+      padding: 0.55rem 0.9rem; border-radius: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; border: none;
+      background: transparent; color: #547792;
+      transition: all 0.15s; text-align: left;
+    }
+
+    .logout-btn:hover { background: rgba(192,57,43,0.15); color: #e07060; }
 
     /* ── DB STATUS ── */
     .db-status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.65rem; font-weight: 600; padding: 0 0.5rem; }
     .db-dot { width: 7px; height: 7px; border-radius: 50%; background: #547792; transition: background 0.3s; }
-    .db-dot.connected  { background: #4caf7d; }
-    .db-dot.error      { background: var(--danger); }
-    .db-dot.loading    { background: var(--accent2); animation: pulse 1s infinite; }
-
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .db-dot.connected { background: #4caf7d; }
+    .db-dot.error     { background: var(--danger); }
+    .db-dot.loading   { background: var(--accent2); animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
     /* ── CONTENT ── */
     .content { display: flex; flex-direction: column; min-height: 100vh; overflow-y: auto; }
-
-    /* ── PAGE HEADER ── */
     .page-header { padding: 1.75rem 2.25rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 10; }
     .page-header h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
     .page-header .sub { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-dim); margin-top: 0.2rem; }
@@ -86,7 +289,7 @@
     .page { display: none; flex-direction: column; gap: 1.75rem; padding: 2rem 2.25rem; flex: 1; }
     .page.active { display: flex; }
 
-    /* ── LOADING OVERLAY ── */
+    /* ── LOADING ── */
     .loading-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 4rem; color: var(--text-dim); font-size: 0.85rem; font-weight: 600; }
     .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -124,19 +327,18 @@
     /* ── TODAY ROWS ── */
     .habit-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem; }
     .today-row { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1.1rem; display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 0.9rem; cursor: pointer; transition: all 0.15s; user-select: none; }
-    .today-row:hover { border-color: var(--accent); box-shadow: 0 2px 10px rgba(26,50,99,0.07); }
-    .today-row.done  { background: var(--accent-light); border-color: #b0c0dc; }
+    .today-row:hover  { border-color: var(--accent); box-shadow: 0 2px 10px rgba(26,50,99,0.07); }
+    .today-row.done   { background: var(--accent-light); border-color: #b0c0dc; }
     .today-row.saving { opacity: 0.6; pointer-events: none; }
 
     .habit-check { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; transition: all 0.15s; color: transparent; }
     .today-row.done .habit-check { background: var(--accent); border-color: var(--accent); color: #E8E2DB; }
-
     .h-name { font-size: 0.92rem; font-weight: 600; color: var(--text); }
     .today-row.done .h-name { opacity: 0.6; text-decoration: line-through; text-decoration-color: var(--text-dim); }
     .h-meta { font-size: 0.68rem; color: var(--text-dim); margin-top: 0.2rem; font-family: 'JetBrains Mono', monospace; }
     .h-streak { font-size: 0.75rem; font-weight: 700; color: var(--accent2); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
     .mini-chart { display: flex; gap: 3px; align-items: flex-end; }
-    .mini-bar   { width: 5px; border-radius: 2px; background: var(--border); }
+    .mini-bar { width: 5px; border-radius: 2px; background: var(--border); }
     .mini-bar.on { background: var(--accent); }
 
     /* ── HEATMAP ── */
@@ -147,10 +349,8 @@
     /* ── MANAGE ── */
     .manage-toolbar { display: flex; align-items: center; justify-content: space-between; }
     .manage-list    { display: flex; flex-direction: column; gap: 0.5rem; }
-
     .manage-row { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; transition: border-color 0.15s; }
     .manage-row:hover { border-color: var(--text-dim); }
-
     .manage-row-name { font-size: 0.95rem; font-weight: 700; color: var(--text); }
     .manage-row-meta { font-size: 0.7rem; color: var(--text-dim); margin-top: 0.2rem; font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .manage-row-actions { display: flex; gap: 0.5rem; align-items: center; }
@@ -161,7 +361,7 @@
     .icon-btn:disabled    { opacity: 0.4; cursor: not-allowed; }
 
     .active-toggle { width: 36px; height: 20px; border-radius: 10px; background: var(--border); border: none; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
-    .active-toggle::after { content:''; position:absolute; top:3px; left:3px; width:14px; height:14px; border-radius:50%; background:#fff; transition: transform 0.2s; }
+    .active-toggle::after { content:''; position:absolute; top:3px; left:3px; width:14px; height:14px; border-radius:50%; background:#fff; transition:transform 0.2s; }
     .active-toggle.on { background: var(--accent); }
     .active-toggle.on::after { transform: translateX(16px); }
     .active-toggle:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -176,7 +376,7 @@
 
     /* ── TOAST ── */
     .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text); color: #E8E2DB; padding: 0.6rem 1.4rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; transition: transform 0.25s ease; z-index: 200; white-space: nowrap; }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.show  { transform: translateX(-50%) translateY(0); }
     .toast.error { background: var(--danger); }
 
     /* ── MODAL ── */
@@ -200,98 +400,151 @@
     .confirm-actions { display: flex; gap: 0.6rem; justify-content: center; }
 
     @media (max-width: 680px) {
-      body { grid-template-columns: 1fr; }
+      #appScreen.visible { grid-template-columns: 1fr; }
       .sidebar { display: none; }
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
-      .heatmap-grid { grid-template-columns: repeat(10, 1fr); }
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .heatmap-grid { grid-template-columns: repeat(10,1fr); }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══ SIDEBAR ═══ -->
-  <aside class="sidebar">
-    <div class="logo"><span class="logo-dot"></span> alışkanlık takip</div>
-
-    <div class="streak-card">
-      <div class="streak-num" id="sideStreak">—</div>
-      <div class="streak-label">🔥 en uzun seri</div>
-    </div>
-
-    <nav class="nav">
-      <div class="nav-title">Menü</div>
-      <div class="nav-item active" data-page="bugun"> <span class="nav-icon">◉</span> Bugün</div>
-      <div class="nav-item"        data-page="manage"><span class="nav-icon">◇</span> Alışkanlıklar</div>
-    </nav>
-
-    <div class="db-status">
-      <div class="db-dot loading" id="dbDot"></div>
-      <span id="dbLabel">Bağlanıyor...</span>
-    </div>
-
-    <div class="sidebar-footer">v0.3 · supabase</div>
-  </aside>
-
-  <!-- ═══ CONTENT ═══ -->
-  <div class="content">
-    <div class="page-header">
-      <div>
-        <h1 id="pageTitle">Bugün</h1>
-        <div class="sub" id="pageSub"></div>
-      </div>
-      <div id="pageAction"></div>
-    </div>
-
-    <!-- BUGÜN -->
-    <div class="page active" id="page-bugun">
-      <div class="week-nav">
-        <button class="week-arrow" id="weekPrev" title="Önceki hafta">&#8592;</button>
-        <div class="week-strip" id="weekStrip"></div>
-        <button class="week-arrow" id="weekNext" title="Sonraki hafta">&#8594;</button>
+  <!-- ═══════════════════════════════════════
+       AUTH SCREEN
+  ═══════════════════════════════════════ -->
+  <div id="authScreen">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <span class="auth-logo-dot"></span>
+        alışkanlık takip
       </div>
 
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-val" id="statDone">—</div>
-          <div class="stat-label">Bugün Tamamlanan</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="statDoneBar" style="width:0%"></div></div>
+      <!-- Giriş / Kayıt sekmeleri -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin"  onclick="switchTab('login')">Giriş Yap</button>
+        <button class="auth-tab"        id="tabSignup" onclick="switchTab('signup')">Kayıt Ol</button>
+      </div>
+
+      <div id="authTitle"    class="auth-title">Tekrar hoş geldin 👋</div>
+      <div id="authSubtitle" class="auth-subtitle">Devam etmek için giriş yap.</div>
+
+      <div class="auth-error" id="authError"></div>
+
+      <div class="auth-fields">
+        <div class="auth-field" id="fieldName" style="display:none">
+          <label>Kullanıcı Adı</label>
+          <input type="text" id="authUsername" placeholder="adın soyadın" autocomplete="name" />
         </div>
-        <div class="stat-card">
-          <div class="stat-val" id="statWeek">—</div>
-          <div class="stat-label">Bugün Tamamlanma %</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="statWeekBar" style="width:0%"></div></div>
+        <div class="auth-field">
+          <label>E-posta</label>
+          <input type="email" id="authEmail" placeholder="ornek@mail.com" autocomplete="email" />
         </div>
-        <div class="stat-card">
-          <div class="stat-val" id="statStreak">—</div>
-          <div class="stat-label">En Uzun Seri 🔥</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="statStreakBar" style="width:0%"></div></div>
+        <div class="auth-field">
+          <label>Şifre</label>
+          <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" />
         </div>
       </div>
 
-      <div>
-        <div class="section-header">
-          <div class="section-title">Aktif Alışkanlıklar</div>
-          <div style="font-size:0.7rem;color:var(--text-dim)" id="doneCount"></div>
+      <button class="auth-btn" id="authSubmitBtn" onclick="handleAuth()">
+        <span id="authBtnText">Giriş Yap</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       APP SCREEN
+  ═══════════════════════════════════════ -->
+  <div id="appScreen">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo"><span class="logo-dot"></span> alışkanlık takip</div>
+
+      <div class="streak-card">
+        <div class="streak-num" id="sideStreak">—</div>
+        <div class="streak-label">🔥 en uzun seri</div>
+      </div>
+
+      <nav class="nav">
+        <div class="nav-title">Menü</div>
+        <div class="nav-item active" data-page="bugun"> <span class="nav-icon">◉</span> Bugün</div>
+        <div class="nav-item"        data-page="manage"><span class="nav-icon">◇</span> Alışkanlıklar</div>
+      </nav>
+
+      <div class="db-status">
+        <div class="db-dot loading" id="dbDot"></div>
+        <span id="dbLabel">Bağlanıyor...</span>
+      </div>
+
+      <div class="user-info">
+        <div class="user-email" id="userEmail">—</div>
+        <button class="logout-btn" onclick="handleLogout()">
+          <span>↩</span> Çıkış Yap
+        </button>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1 id="pageTitle">Bugün</h1>
+          <div class="sub" id="pageSub"></div>
         </div>
-        <div class="habit-list" id="todayList">
+        <div id="pageAction"></div>
+      </div>
+
+      <!-- BUGÜN -->
+      <div class="page active" id="page-bugun">
+        <div class="week-nav">
+          <button class="week-arrow" id="weekPrev">&#8592;</button>
+          <div class="week-strip" id="weekStrip"></div>
+          <button class="week-arrow" id="weekNext">&#8594;</button>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-val" id="statDone">—</div>
+            <div class="stat-label">Bugün Tamamlanan</div>
+            <div class="stat-bar"><div class="stat-bar-fill" id="statDoneBar" style="width:0%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" id="statWeek">—</div>
+            <div class="stat-label">Tamamlanma %</div>
+            <div class="stat-bar"><div class="stat-bar-fill" id="statWeekBar" style="width:0%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" id="statStreak">—</div>
+            <div class="stat-label">En Uzun Seri 🔥</div>
+            <div class="stat-bar"><div class="stat-bar-fill" id="statStreakBar" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-header">
+            <div class="section-title">Aktif Alışkanlıklar</div>
+            <div style="font-size:0.7rem;color:var(--text-dim)" id="doneCount"></div>
+          </div>
+          <div class="habit-list" id="todayList">
+            <div class="loading-overlay"><div class="spinner"></div>Yükleniyor...</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-header"><div class="section-title">Son 15 Gün Aktivite</div></div>
+          <div class="heatmap-grid" id="heatmap"></div>
+        </div>
+      </div>
+
+      <!-- ALIŞ KANLIKLAR -->
+      <div class="page" id="page-manage">
+        <div class="manage-toolbar">
+          <div class="section-title">Tüm Alışkanlıklar (<span id="manageCount">—</span>)</div>
+          <button class="btn btn-primary btn-sm" id="openAddBtn">+ Yeni Ekle</button>
+        </div>
+        <div class="manage-list" id="manageList">
           <div class="loading-overlay"><div class="spinner"></div>Yükleniyor...</div>
         </div>
-      </div>
-
-      <div>
-        <div class="section-header"><div class="section-title">Son 15 Gün Aktivite</div></div>
-        <div class="heatmap-grid" id="heatmap"></div>
-      </div>
-    </div>
-
-    <!-- ALIŞ KANLIKLAR -->
-    <div class="page" id="page-manage">
-      <div class="manage-toolbar">
-        <div class="section-title">Tüm Alışkanlıklar (<span id="manageCount">—</span>)</div>
-        <button class="btn btn-primary btn-sm" id="openAddBtn">+ Yeni Ekle</button>
-      </div>
-      <div class="manage-list" id="manageList">
-        <div class="loading-overlay"><div class="spinner"></div>Yükleniyor...</div>
       </div>
     </div>
   </div>
@@ -345,12 +598,11 @@
     </div>
   </div>
 
-  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
   <script>
   /* ══════════════════════════════════════════
-     SUPABASE INIT
+     SUPABASE
   ══════════════════════════════════════════ */
   const SUPA_URL = 'https://ygorxerdfnumxwmbvsko.supabase.co';
   const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlnb3J4ZXJkZm51bXh3bWJ2c2tvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1NTY5NTUsImV4cCI6MjA4ODEzMjk1NX0.TeFVpH10krgEgQQDFcse9YTbSBvMgvfzu_63JjtlHKU';
@@ -359,18 +611,17 @@
   const CAT_LABELS = { saglik:'Sağlık', zihin:'Zihin', uretim:'Üretim', sosyal:'Sosyal' };
   const CAT_ICONS  = { saglik:'🏃',    zihin:'📚',    uretim:'💻',     sosyal:'🤝' };
 
-  const now        = new Date();
-  const TODAY      = now.toISOString().split('T')[0]; // "2026-03-03"
+  const now   = new Date();
+  const TODAY = now.toISOString().split('T')[0];
 
-  // Selected date state
-  let selectedDate = TODAY;             // "YYYY-MM-DD" — currently viewed date
-  let weekOffset   = 0;                 // 0 = current week, -1 = last week, etc.
-
-  let HABITS     = [];
-  let DATE_DONE  = {};  // { habit_id: log_id }  for selectedDate
+  let currentUser  = null;
+  let selectedDate = TODAY;
+  let weekOffset   = 0;
+  let HABITS       = [];
+  let DATE_DONE    = {};
 
   /* ══════════════════════════════════════════
-     TOAST
+     UTILS
   ══════════════════════════════════════════ */
   function toast(msg, isError = false) {
     const el = document.getElementById('toast');
@@ -380,26 +631,132 @@
     setTimeout(() => el.classList.remove('show'), 2800);
   }
 
-  /* ══════════════════════════════════════════
-     DB STATUS
-  ══════════════════════════════════════════ */
   function setDbStatus(state) {
-    const dot   = document.getElementById('dbDot');
-    const label = document.getElementById('dbLabel');
-    dot.className = 'db-dot ' + state;
-    label.textContent = state === 'connected' ? 'Bağlı' : state === 'error' ? 'Bağlantı hatası' : 'Bağlanıyor...';
+    document.getElementById('dbDot').className   = 'db-dot ' + state;
+    document.getElementById('dbLabel').textContent =
+      state === 'connected' ? 'Bağlı' : state === 'error' ? 'Bağlantı hatası' : 'Bağlanıyor...';
+  }
+
+  function toDateStr(d) {
+    return d.getFullYear() + '-' +
+      String(d.getMonth()+1).padStart(2,'0') + '-' +
+      String(d.getDate()).padStart(2,'0');
   }
 
   /* ══════════════════════════════════════════
-     LOAD DATA FROM SUPABASE
+     AUTH — SCREEN SWITCHING
+  ══════════════════════════════════════════ */
+  let authMode = 'login';
+
+  function switchTab(mode) {
+    authMode = mode;
+    const isLogin = mode === 'login';
+    document.getElementById('tabLogin').classList.toggle('active', isLogin);
+    document.getElementById('tabSignup').classList.toggle('active', !isLogin);
+    document.getElementById('fieldName').style.display = isLogin ? 'none' : 'block';
+    document.getElementById('authTitle').textContent    = isLogin ? 'Tekrar hoş geldin 👋' : 'Hesap oluştur';
+    document.getElementById('authSubtitle').textContent = isLogin
+      ? 'Devam etmek için giriş yap.'
+      : 'Alışkanlıklarını takip etmeye başla.';
+    document.getElementById('authBtnText').textContent  = isLogin ? 'Giriş Yap' : 'Kayıt Ol';
+    hideAuthError();
+  }
+
+  function showAuthError(msg) {
+    const el = document.getElementById('authError');
+    el.textContent = msg;
+    el.classList.add('show');
+  }
+
+  function hideAuthError() {
+    document.getElementById('authError').classList.remove('show');
+  }
+
+  async function handleAuth() {
+    const email    = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const btn      = document.getElementById('authSubmitBtn');
+
+    if (!email || !password) { showAuthError('E-posta ve şifre gerekli.'); return; }
+    if (password.length < 6) { showAuthError('Şifre en az 6 karakter olmalı.'); return; }
+
+    btn.disabled = true;
+    document.getElementById('authBtnText').textContent = '...';
+    hideAuthError();
+
+    try {
+      let result;
+      if (authMode === 'login') {
+        result = await sb.auth.signInWithPassword({ email, password });
+      } else {
+        const username = document.getElementById('authUsername').value.trim() || email.split('@')[0];
+        result = await sb.auth.signUp({ email, password, options: { data: { username } } });
+      }
+
+      const { data, error } = result;
+      if (error) throw error;
+
+      if (authMode === 'signup' && data.user && !data.session) {
+        showAuthError('Kayıt başarılı! E-postanı onayla ve giriş yap.');
+        switchTab('login');
+      } else if (data.session) {
+        await onLogin(data.session.user);
+      }
+    } catch (err) {
+      const msgs = {
+        'Invalid login credentials':       'E-posta veya şifre hatalı.',
+        'User already registered':          'Bu e-posta zaten kayıtlı.',
+        'Email not confirmed':              'E-postanı önce onayla.',
+        'Password should be at least 6 characters': 'Şifre en az 6 karakter olmalı.',
+      };
+      showAuthError(msgs[err.message] || err.message);
+    }
+
+    btn.disabled = false;
+    document.getElementById('authBtnText').textContent = authMode === 'login' ? 'Giriş Yap' : 'Kayıt Ol';
+  }
+
+  async function handleLogout() {
+    await sb.auth.signOut();
+    currentUser = null;
+    HABITS = []; DATE_DONE = {};
+    document.getElementById('appScreen').classList.remove('visible');
+    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('authEmail').value    = '';
+    document.getElementById('authPassword').value = '';
+    switchTab('login');
+  }
+
+  async function onLogin(user) {
+    currentUser = user;
+    const name  = user.user_metadata?.username || user.email;
+    document.getElementById('userEmail').textContent  = name;
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('appScreen').classList.add('visible');
+    await loadAll();
+    await loadLogsForDate(selectedDate);
+    buildWeekStrip();
+    navigate('bugun');
+  }
+
+  // Enter key on password field
+  document.getElementById('authPassword').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleAuth();
+  });
+
+  /* ══════════════════════════════════════════
+     DATA LOADING
   ══════════════════════════════════════════ */
   async function loadAll() {
     setDbStatus('loading');
     try {
-      const { data: habits, error: hErr } = await sb
-        .from('habits').select('*').order('created_at', { ascending: true });
-      if (hErr) throw hErr;
-      HABITS = habits;
+      const { data, error } = await sb
+        .from('habits')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      HABITS = data;
       setDbStatus('connected');
     } catch (err) {
       console.error(err);
@@ -409,18 +766,20 @@
   }
 
   async function loadLogsForDate(dateStr) {
+    if (!currentUser) return;
     try {
-      const { data: logs, error } = await sb
+      const { data, error } = await sb
         .from('daily_logs')
         .select('id, habit_id')
         .eq('log_date', dateStr)
+        .eq('user_id', currentUser.id)
         .eq('done', true);
       if (error) throw error;
       DATE_DONE = {};
-      logs.forEach(l => { DATE_DONE[l.habit_id] = l.id; });
+      data.forEach(l => { DATE_DONE[l.habit_id] = l.id; });
     } catch (err) {
       console.error(err);
-      toast('Günlük veriler yüklenemedi 😞', true);
+      toast('Günlük veriler yüklenemedi', true);
     }
   }
 
@@ -444,7 +803,7 @@
   }
 
   function updatePageHeader() {
-    const d     = new Date(selectedDate + 'T12:00:00');
+    const d       = new Date(selectedDate + 'T12:00:00');
     const isToday = selectedDate === TODAY;
     document.getElementById('pageTitle').textContent =
       isToday ? 'Bugün' : d.toLocaleDateString('tr-TR',{weekday:'long'});
@@ -461,80 +820,61 @@
   ══════════════════════════════════════════ */
   const dayNames = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
 
-  // Returns "YYYY-MM-DD" for a Date object (local time)
-  function toDateStr(d) {
-    return d.getFullYear() + '-' +
-      String(d.getMonth()+1).padStart(2,'0') + '-' +
-      String(d.getDate()).padStart(2,'0');
-  }
-
-  // Monday of the week containing `dateStr`, offset by `weekOffset` weeks
   function getWeekStart(dateStr, offset) {
-    const d = new Date(dateStr + 'T12:00:00');
-    const dow = d.getDay() === 0 ? 6 : d.getDay() - 1; // 0=Mon
+    const d   = new Date(dateStr + 'T12:00:00');
+    const dow = d.getDay() === 0 ? 6 : d.getDay() - 1;
     d.setDate(d.getDate() - dow + offset * 7);
     return d;
   }
 
   function buildWeekStrip() {
-    const strip = document.getElementById('weekStrip');
-    strip.innerHTML = '';
-
+    const strip     = document.getElementById('weekStrip');
     const weekStart = getWeekStart(TODAY, weekOffset);
+    strip.innerHTML = '';
 
     for (let i = 0; i < 7; i++) {
       const d    = new Date(weekStart);
       d.setDate(weekStart.getDate() + i);
-      const dStr = toDateStr(d);
-      const isToday    = dStr === TODAY;
-      const isSelected = dStr === selectedDate;
-      const isFuture   = dStr > TODAY;
+      const dStr     = toDateStr(d);
+      const isToday  = dStr === TODAY;
+      const isSel    = dStr === selectedDate;
+      const isFuture = dStr > TODAY;
 
       const pill = document.createElement('div');
       let cls = 'day-pill';
-      if (isSelected) cls += ' selected';
-      if (isToday)    cls += ' today-marker';
-      if (isFuture)   cls += ' future no-dot';
+      if (isSel)    cls += ' selected';
+      if (isToday)  cls += ' today-marker';
+      if (isFuture) cls += ' future no-dot';
+
       pill.className = cls;
       pill.innerHTML = `<div class="day-name">${dayNames[i]}</div>
                         <div class="day-num">${d.getDate()}</div>
                         <div class="day-dot"></div>`;
-
-      if (!isFuture) {
-        pill.addEventListener('click', () => selectDate(dStr));
-      }
+      if (!isFuture) pill.addEventListener('click', () => selectDate(dStr));
       strip.appendChild(pill);
     }
 
-    // Arrows
-    const prevBtn = document.getElementById('weekPrev');
-    const nextBtn = document.getElementById('weekNext');
-
-    prevBtn.onclick = () => { weekOffset--; buildWeekStrip(); };
-
-    // Disable next if this week already contains today
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
+    const weekEnd    = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 6);
     const weekEndStr = toDateStr(weekEnd);
-    nextBtn.disabled = weekEndStr >= TODAY;
-    nextBtn.onclick  = () => { weekOffset++; buildWeekStrip(); };
+
+    document.getElementById('weekPrev').onclick  = () => { weekOffset--; buildWeekStrip(); };
+    document.getElementById('weekNext').disabled = weekEndStr >= TODAY;
+    document.getElementById('weekNext').onclick  = () => { weekOffset++; buildWeekStrip(); };
   }
 
   async function selectDate(dateStr) {
-    if (dateStr > TODAY) return;          // future — block
+    if (dateStr > TODAY) return;
     selectedDate = dateStr;
     buildWeekStrip();
     updatePageHeader();
-    const list = document.getElementById('todayList');
-    list.innerHTML = '<div class="loading-overlay"><div class="spinner"></div>Yükleniyor...</div>';
+    document.getElementById('todayList').innerHTML =
+      '<div class="loading-overlay"><div class="spinner"></div>Yükleniyor...</div>';
     await loadLogsForDate(selectedDate);
     renderToday();
   }
 
-  buildWeekStrip();
-
   /* ══════════════════════════════════════════
-     HEATMAP (static placeholder)
+     HEATMAP
   ══════════════════════════════════════════ */
   const hmap = document.getElementById('heatmap');
   const lvls = ['','l1','l2','l3','l4'];
@@ -548,18 +888,17 @@
      PAGE: BUGÜN
   ══════════════════════════════════════════ */
   function renderToday() {
-    const active     = HABITS.filter(h => h.active);
-    const doneCount  = active.filter(h => DATE_DONE[h.id] !== undefined).length;
-    const pct        = active.length ? Math.round(doneCount / active.length * 100) : 0;
-    const maxStreak  = HABITS.reduce((m, h) => Math.max(m, h.streak || 0), 0);
-    const isPast     = selectedDate < TODAY;
+    const active    = HABITS.filter(h => h.active);
+    const doneCount = active.filter(h => DATE_DONE[h.id] !== undefined).length;
+    const pct       = active.length ? Math.round(doneCount / active.length * 100) : 0;
+    const maxStreak = HABITS.reduce((m, h) => Math.max(m, h.streak||0), 0);
 
     document.getElementById('statDone').textContent      = `${doneCount}/${active.length}`;
     document.getElementById('statDoneBar').style.width   = pct + '%';
     document.getElementById('statWeek').textContent      = `${pct}%`;
     document.getElementById('statWeekBar').style.width   = pct + '%';
     document.getElementById('statStreak').textContent    = maxStreak;
-    document.getElementById('statStreakBar').style.width = Math.min(maxStreak * 5, 100) + '%';
+    document.getElementById('statStreakBar').style.width = Math.min(maxStreak*5,100) + '%';
     document.getElementById('sideStreak').textContent    = maxStreak;
     document.getElementById('doneCount').textContent     = `${doneCount} / ${active.length} tamamlandı`;
 
@@ -574,7 +913,7 @@
     active.forEach(h => {
       const done = DATE_DONE[h.id] !== undefined;
       const row  = document.createElement('div');
-      row.className = 'today-row' + (done ? ' done' : '') + (isPast ? ' past' : '');
+      row.className = 'today-row' + (done ? ' done' : '');
       row.innerHTML = `
         <div class="habit-check">${done ? '✓' : ''}</div>
         <div>
@@ -586,9 +925,8 @@
         </div>
         <div class="h-streak">${h.streak > 0 ? '🔥 ' + h.streak : '—'}</div>
         <div class="mini-chart">
-          ${(h.bars||[0,0,0,0,0,0,0]).map(b => `<div class="mini-bar ${b?'on':''}" style="height:${7+(b?7:0)}px"></div>`).join('')}
+          ${(h.bars||[0,0,0,0,0,0,0]).map(b=>`<div class="mini-bar ${b?'on':''}" style="height:${7+(b?7:0)}px"></div>`).join('')}
         </div>`;
-
       row.addEventListener('click', () => toggleDay(h, row));
       list.appendChild(row);
     });
@@ -602,28 +940,24 @@
       if (!wasDone) {
         const { data, error } = await sb
           .from('daily_logs')
-          .insert({ habit_id: h.id, log_date: selectedDate, done: true })
+          .insert({ habit_id: h.id, log_date: selectedDate, done: true, user_id: currentUser.id })
           .select('id').single();
         if (error) throw error;
         DATE_DONE[h.id] = data.id;
-
-        // Only update streak/bars when marking today
         if (selectedDate === TODAY) {
-          h.streak = (h.streak || 0) + 1;
-          const newBars = [...(h.bars || [0,0,0,0,0,0,0]).slice(1), 1];
+          h.streak = (h.streak||0) + 1;
+          const newBars = [...(h.bars||[0,0,0,0,0,0,0]).slice(1), 1];
           await sb.from('habits').update({ streak: h.streak, bars: newBars }).eq('id', h.id);
           h.bars = newBars;
         }
         toast(`✓ ${h.name} tamamlandı!`);
       } else {
-        const logId = DATE_DONE[h.id];
-        const { error } = await sb.from('daily_logs').delete().eq('id', logId);
+        const { error } = await sb.from('daily_logs').delete().eq('id', DATE_DONE[h.id]);
         if (error) throw error;
         delete DATE_DONE[h.id];
-
         if (selectedDate === TODAY) {
-          h.streak = Math.max(0, (h.streak || 1) - 1);
-          const newBars = [...(h.bars || [0,0,0,0,0,0,0]).slice(1), 0];
+          h.streak = Math.max(0, (h.streak||1) - 1);
+          const newBars = [...(h.bars||[0,0,0,0,0,0,0]).slice(1), 0];
           await sb.from('habits').update({ streak: h.streak, bars: newBars }).eq('id', h.id);
           h.bars = newBars;
         }
@@ -631,7 +965,7 @@
       }
     } catch (err) {
       console.error(err);
-      toast('Kaydedilemedi, tekrar dene 😞', true);
+      toast('Kaydedilemedi 😞', true);
     }
 
     row.classList.remove('saving');
@@ -644,7 +978,6 @@
   function renderManage() {
     document.getElementById('manageCount').textContent = HABITS.length;
     document.getElementById('pageSub').textContent     = `${HABITS.length} alışkanlık tanımlı`;
-
     const list = document.getElementById('manageList');
     list.innerHTML = '';
 
@@ -657,7 +990,7 @@
       const row = document.createElement('div');
       row.className = 'manage-row';
       row.innerHTML = `
-        <button class="active-toggle ${h.active ? 'on' : ''}" title="${h.active ? 'Aktif — kapat' : 'Pasif — aç'}"></button>
+        <button class="active-toggle ${h.active?'on':''}" title="${h.active?'Aktif — kapat':'Pasif — aç'}"></button>
         <div>
           <div class="manage-row-name">${h.name}</div>
           <div class="manage-row-meta">
@@ -671,7 +1004,6 @@
           <button class="icon-btn trash" title="Sil">🗑</button>
         </div>`;
 
-      // Toggle active
       const toggle = row.querySelector('.active-toggle');
       toggle.addEventListener('click', async () => {
         toggle.disabled = true;
@@ -687,7 +1019,6 @@
 
       row.querySelector('.icon-btn.edit').addEventListener('click',  () => openEdit(h));
       row.querySelector('.icon-btn.trash').addEventListener('click', () => openConfirm(h));
-
       list.appendChild(row);
     });
   }
@@ -699,8 +1030,8 @@
 
   function openAdd() {
     editingId = null;
-    document.getElementById('modalTitle').textContent    = 'Yeni Alışkanlık';
-    document.getElementById('modalSaveBtn').textContent  = 'Ekle';
+    document.getElementById('modalTitle').textContent   = 'Yeni Alışkanlık';
+    document.getElementById('modalSaveBtn').textContent = 'Ekle';
     document.getElementById('fName').value  = '';
     document.getElementById('fCat').value   = 'saglik';
     document.getElementById('fFreq').value  = 'Her gün';
@@ -710,8 +1041,8 @@
 
   function openEdit(h) {
     editingId = h.id;
-    document.getElementById('modalTitle').textContent    = 'Alışkanlığı Düzenle';
-    document.getElementById('modalSaveBtn').textContent  = 'Kaydet';
+    document.getElementById('modalTitle').textContent   = 'Alışkanlığı Düzenle';
+    document.getElementById('modalSaveBtn').textContent = 'Kaydet';
     document.getElementById('fName').value  = h.name;
     document.getElementById('fCat').value   = h.cat;
     document.getElementById('fFreq').value  = h.freq;
@@ -726,26 +1057,21 @@
     if (!name) { document.getElementById('fName').focus(); return; }
     const cat  = document.getElementById('fCat').value;
     const freq = document.getElementById('fFreq').value;
-
-    const saveBtn = document.getElementById('modalSaveBtn');
-    saveBtn.disabled = true;
-    saveBtn.textContent = '...';
+    const btn  = document.getElementById('modalSaveBtn');
+    btn.disabled = true; btn.textContent = '...';
 
     try {
       if (editingId !== null) {
-        // UPDATE
         const { error } = await sb.from('habits').update({ name, cat, freq }).eq('id', editingId);
         if (error) throw error;
         const h = HABITS.find(x => x.id === editingId);
         if (h) { h.name = name; h.cat = cat; h.freq = freq; }
         toast('Alışkanlık güncellendi ✓');
       } else {
-        // INSERT
         const { data, error } = await sb
           .from('habits')
-          .insert({ name, cat, freq, streak: 0, active: true, bars: [0,0,0,0,0,0,0] })
-          .select()
-          .single();
+          .insert({ name, cat, freq, streak:0, active:true, bars:[0,0,0,0,0,0,0], user_id: currentUser.id })
+          .select().single();
         if (error) throw error;
         HABITS.push(data);
         toast('Yeni alışkanlık eklendi ✓');
@@ -757,8 +1083,8 @@
       toast('Kaydedilemedi 😞', true);
     }
 
-    saveBtn.disabled = false;
-    saveBtn.textContent = editingId ? 'Kaydet' : 'Ekle';
+    btn.disabled = false;
+    btn.textContent = editingId ? 'Kaydet' : 'Ekle';
   }
 
   document.getElementById('openAddBtn').addEventListener('click', openAdd);
@@ -775,7 +1101,8 @@
 
   function openConfirm(h) {
     deleteId = h.id;
-    document.getElementById('confirmText').textContent = `"${h.name}" alışkanlığı ve tüm geçmişi kalıcı olarak silinecek.`;
+    document.getElementById('confirmText').textContent =
+      `"${h.name}" alışkanlığı ve tüm geçmişi kalıcı olarak silinecek.`;
     document.getElementById('confirmModal').classList.add('open');
   }
 
@@ -789,33 +1116,36 @@
 
   document.getElementById('confirmOk').addEventListener('click', async () => {
     if (deleteId === null) return;
-    const okBtn = document.getElementById('confirmOk');
-    okBtn.disabled = true;
-    okBtn.textContent = '...';
-
+    const btn = document.getElementById('confirmOk');
+    btn.disabled = true; btn.textContent = '...';
     const { error } = await sb.from('habits').delete().eq('id', deleteId);
-    if (error) {
-      toast('Silinemedi 😞', true);
-      okBtn.disabled = false; okBtn.textContent = 'Evet, Sil';
-      return;
-    }
-
+    if (error) { toast('Silinemedi 😞', true); btn.disabled = false; btn.textContent = 'Evet, Sil'; return; }
     const name = HABITS.find(h => h.id === deleteId)?.name;
     HABITS = HABITS.filter(h => h.id !== deleteId);
-    delete TODAY_DONE[deleteId];
+    delete DATE_DONE[deleteId];
     closeConfirm();
     renderManage();
     toast(`"${name}" silindi`);
-    okBtn.disabled = false; okBtn.textContent = 'Evet, Sil';
+    btn.disabled = false; btn.textContent = 'Evet, Sil';
   });
 
   /* ══════════════════════════════════════════
-     INIT
+     INIT — Oturumu kontrol et
   ══════════════════════════════════════════ */
   (async () => {
-    await loadAll();
-    await loadLogsForDate(selectedDate);
-    navigate('bugun');
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) {
+      await onLogin(session.user);
+    }
+    // Auth state değişikliklerini dinle (token yenileme vb.)
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user && !currentUser) {
+        await onLogin(session.user);
+      }
+      if (event === 'SIGNED_OUT') {
+        currentUser = null;
+      }
+    });
   })();
   </script>
 
